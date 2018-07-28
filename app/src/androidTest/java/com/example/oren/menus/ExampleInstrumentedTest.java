@@ -1,4 +1,4 @@
-package com.example.oren.menues;
+package com.example.oren.menus;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.oren.menues", appContext.getPackageName());
+        assertEquals("com.example.oren.Menus", appContext.getPackageName());
     }
 }
