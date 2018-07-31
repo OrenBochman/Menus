@@ -1,22 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL -->
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/addDB"
         android:title="add from DB"
-        app:showAsAction="never" />
-    <item android:id="@+id/addInet"
+        android:showAsAction="never"
+      />
+
+    <item android:id="@+id/addWeb"
         android:title="add from Web"
-        app:showAsAction="never" />
+        android:showAsAction="never"
+
+        />
+
+    <item android:id="@+id/removeAll"
+        android:title="Clear all items"
+        android:showAsAction="never"
+        />
+
+    <item android:id="@+id/exit"
+        android:title="Exit"
+        android:showAsAction="never"
+        />
 
     <item android:id="@+id/add_button_opt"
-        android:title="+" app:showAsAction="always">
+        android:title="+" android:showAsAction="ifRoom">
         <menu>
-            <item android:id="@+id/edit_button"
-                android:title="edit button"
-                />
-            <item android:id="@+id/remove_button_opt"
-                android:title="remove button" />
+            <item android:id="@+id/edit_button" android:title="edit button" />
+            <item android:id="@+id/remove_button_opt" android:title="remove button" />
         </menu>
     </item>
-
 </menu>

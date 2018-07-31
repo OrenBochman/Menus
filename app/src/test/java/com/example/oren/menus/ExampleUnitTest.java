@@ -1,4 +1,4 @@
-package com.example.oren.Menus;
+package com.example.oren.menus;
 
 import org.junit.Test;
 

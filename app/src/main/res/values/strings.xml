@@ -1,4 +1,24 @@
-<resources>
-    <string name="app_name">Menus</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">TMDB Movie Guide</string>
     <string name="add">Add</string>
+    <string name="edit_list_item">edit list item</string>
+    <string name="remove_list_item">remove list item</string>
+    <string name="edit_button">edit button</string>
+    <string name="remove_button">remove button</string>
+    <string name="movie_name" tools:keep="@string/movie_name">Movie name</string>
+    <string name="alice_in_wonderland" tools:keep="@string/alice_in_wonderland">Alice in Wonderland</string>
+    <string name="movie_image" tools:keep="@string/movie_image">Movie image</string>
+    <string name="movie_category" tools:keep="@string/movie_category">Movie category</string>
+    <string name="title">TMDB</string>
+    <string name="type_movie_name" tools:keep="@string/type_movie_name">Type Movie Name</string>
+    <string name="search" tools:keep="@string/search">Search</string>
+    <string name="go" tools:keep="@string/go">Go</string>
+    <string name="body" tools:keep="@string/body">body</string>
+    <string name="subject" tools:keep="@string/subject">Subject</string>
+    <string name="todo" tools:keep="@string/todo">TODO</string>
+    <string name="url" tools:keep="@string/url">url</string>
+    <string name="image_uri" tools:keep="@string/image_uri">image uri</string>
+    <string name="show" tools:keep="@string/show">Show</string>
+    <string name="ok" tools:keep="@string/ok">OK</string>
+    <string name="cancel" tools:keep="@string/cancel">Cancel</string>
 </resources>
