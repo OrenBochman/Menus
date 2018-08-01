@@ -1,4 +1,12 @@
+plugins {
+    id "net.ltgt.apt" version "0.18"
+}
+
 apply plugin: 'com.android.application'
+apply plugin: "net.ltgt.apt"
+
+
+
 
 android {
     compileSdkVersion 28
@@ -52,6 +60,26 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    //Networking - Web service
+    // retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    //GSON convertor
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    // Okhttp
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+
+    //Networking - Web service - gson - JSON, serilization support annotations etc
+    implementation 'com.google.code.gson:gson:2.8.5'
+    //Images
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
+
+    implementation 'com.google.dagger:dagger:2.16'
+    implementation 'com.google.dagger:dagger-android-support:2.11' // if you use the support libraries
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.16'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+    implementation 'com.google.dagger:dagger-android:2.11'
+
     implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
         implementation 'com.android.support.constraint:constraint-layout:1.1.2'
@@ -68,6 +96,10 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
+    //lifecycle
+    implementation 'androidx.lifecycle:lifecycle-livedata-core:2.0.0-beta01'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.0.0-beta01'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0-beta01'
     // junit test
     testImplementation 'junit:junit:4.12'
     // hamcrest assertions
@@ -85,7 +117,7 @@ dependencies {
     // Optional -- UI testing with UI Automator
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0-alpha4'
 
-    androidTestImplementation 'androidx.annotation:annotation:1.0.0-alpha4'
+    androidTestImplementation 'androidx.annotation:annotation:1.0.0-beta01'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test:rules:1.1.0-alpha4'
 

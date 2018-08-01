@@ -121,13 +121,13 @@ public class DataGenerator {
         for (int i = 0; i < FIRST.length; i++) {
         //    for (int j = 0; j < SECOND.length; j++) {
                 Movie movie = new Movie();
-                movie.title=FIRST[i] ;
-                movie.body=movie.title + " " + DESCRIPTION[i%DESCRIPTION.length];
-                movie.rating=rnd.nextInt(10);
-                movie.watched=rnd.nextInt(2);
-                movie.category=GENRES[i%GENRES.length];
-                movie.id=FIRST.length * i  + 1;
-                movie.uri="http:\\\\www.tmdb.com\\pic\\"+movie.id;
+                movie.setTitle(FIRST[i]) ;
+                movie.setBody(movie.getTitle() + " " + DESCRIPTION[i%DESCRIPTION.length]);
+                movie.setRating(rnd.nextInt(10));
+                movie.setWatched(rnd.nextInt(2));
+                movie.setCategory(GENRES[i%GENRES.length]);
+                movie.setId(FIRST.length * i  + 1);
+                movie.setUri("http:\\\\www.tmdb.com\\pic\\"+movie.getId());
                 Log.i("DataGenerator", "generateMovies: "+ movie.toString());
                 movies.add(movie);
         //    }

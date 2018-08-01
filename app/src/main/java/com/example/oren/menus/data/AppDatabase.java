@@ -3,23 +3,28 @@ package com.example.oren.menus.data;
 import android.content.Context;
 //import com.example.android.persistence.AppExecutors;
 
-import com.example.oren.menus.AppExecutors;
+//import com.example.oren.menus.AppExecutors;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
+//import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
+//import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Movie.class}, version = 1)
+@Database(entities = {Movie.class},
+        version = 1
+        //,exportSchema = false
+    )
 
 public abstract class AppDatabase extends RoomDatabase {
 
+
+    final String TAG = AppDatabase.class.getName();
 
     private static AppDatabase sInstance;
     private final  MutableLiveData<Boolean> mIsDatabaseCreated = new MutableLiveData<>();
@@ -30,30 +35,21 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract MovieDao movieDao();
 
-
-    public static AppDatabase getInstance(final Context context, final AppExecutors executors) {
+    public static AppDatabase getInstance(final Context context) {
         if (sInstance == null) {
             synchronized (AppDatabase.class) {
                 if (sInstance == null) {
-                    sInstance = buildDatabase(context.getApplicationContext(), executors);
+                    sInstance = Room.databaseBuilder(context.getApplicationContext(),
+                            AppDatabase.class,
+                            MovieConstants.DATABASE_NAME)
+                            .allowMainThreadQueries()       //// Don't do this on a real app!
+                            .build();
                     sInstance.updateDatabaseCreated(context.getApplicationContext());
                 }
             }
         }
         return sInstance;
     }
-//    public static AppDatabase getInstance(final Context context) {
-//        if (sInstance == null) {
-//            synchronized (AppDatabase.class) {
-//                if (sInstance == null) {
-//                    sInstance = Room.databaseBuilder(context.getApplicationContext(),
-//                            AppDatabase.class,MovieConstants.DATABASE_NAME).build();
-// //                   sInstance.updateDatabaseCreated(context.getApplicationContext());
-//                }
-//            }
-//        }
-//        return sInstance;
-//    }
 
     /**
      * Check whether the database already exists and expose it via {@link #getDatabaseCreated()}
@@ -64,17 +60,15 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     }
 
-
     private void setDatabaseCreated(){
         mIsDatabaseCreated.postValue(true);
     }
-
 
     /**
      * Build the database. {@link Builder#build()} only sets up the database configuration and
      * creates a new instance of the database.
      * The SQLite database is only created when it's accessed for the first time.
-     */
+     *
     private static AppDatabase buildDatabase(final Context appContext,
                                              final AppExecutors executors) {
         return Room.databaseBuilder(appContext, AppDatabase.class, DATABASE_NAME)
@@ -96,10 +90,11 @@ public abstract class AppDatabase extends RoomDatabase {
                         });
                     }
                 }).build();
-    }
+    }*/
 
-    private static void insertData(final AppDatabase database, final List<Movie> movies) {
-        database.runInTransaction(() -> database.movieDao().insertMovies(movies));
+    private static void insertData(final AppDatabase database,
+                                   final List<Movie> movies) {
+        database.runInTransaction(() -> database.movieDao().insertMovie(movies));
     }
 
     private static void addDelay() {
@@ -113,4 +108,7 @@ public abstract class AppDatabase extends RoomDatabase {
         return mIsDatabaseCreated;
     }
 
+    public static void destroyInstance() {
+        sInstance = null;
+    }
 }

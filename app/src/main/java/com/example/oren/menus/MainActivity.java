@@ -3,12 +3,15 @@ package com.example.oren.menus;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+//import androidx.room.Room;
 //import androidx.core.content.ContextCompat;
 
 //import android.content.DialogInterface;
 //import android.os.Build;
+//import android.database.sqlite.SQLiteDatabase;
+//import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+//import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,30 +25,39 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 //import android.widget.Toolbar;
 
-import com.example.oren.menus.data.Movie;
+import com.example.oren.menus.data.AppDatabase;
+//import com.example.oren.menus.data.MovieConstants;
+import com.example.oren.menus.data.MovieCursorAdapter;
 import com.example.oren.menus.data.SampleData;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+//import java.util.Arrays;
+
+//import javax.inject.Inject;
 
 import static com.example.oren.menus.R.drawable.ic_film;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayAdapter adapter;
-    private ArrayList<String> list;
-    private final ArrayList<Movie> movieData =new ArrayList<>();
+    final String TAG = MainActivity.class.getName();
 
-    final String TAG="MoviesApp";
+    //@Inject MyTwitterApiClient mTwitterApiClient;
+    //@Inject SharedPreferences sharedPreferences;
+
+    private ArrayAdapter adapter;
+    private ArrayList<String> movieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        //ViewModelProvider.of(this).get(MovieViewModel::class.java);
+        ////////////////// ActionBar //////////////////////////////////////////////////////////////
         ListView listView;
-        Button addMovieButton;
+
         //////////////////
         ActionBar actionBar = getSupportActionBar();
         if( actionBar != null) {
@@ -57,37 +69,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //////////////////add Movie Button /////////////////////////////////////////////////////////
-
-        addMovieButton = findViewById(R.id.addMovieButton);
+        Button addMovieButton = findViewById(R.id.addMovieButton);
         addMovieButton.setOnClickListener(view -> Snackbar.make(findViewById(android.R.id.content), "short click " ,Snackbar.LENGTH_SHORT).show());
 
         registerForContextMenu(addMovieButton);
 
         ///////////////  movieList   ///////////////////////////////////////////////////////////////
 
-        listView =  findViewById(R.id.movieList);
+        if(AppDatabase.getInstance(this).movieDao().getCount()==0)
+            AppDatabase.getInstance(this).movieDao().insertMovie(SampleData.getMovies());
 
-            movieData.addAll(SampleData.getMovies());
+        // Find ListView to populate
+        listView = findViewById(R.id.movieList);
+        // Setup cursor adapter using cursor from last step
+        MovieCursorAdapter movieAdapter = new MovieCursorAdapter(this, AppDatabase.getInstance(this).movieDao().getCursorAll());
+        // Attach cursor adapter to the ListView
+        listView.setAdapter(movieAdapter);
 
-        for (Movie movie:
-                movieData) {
-            Log.i(TAG, "onCreate: " + movie.toString());
-
-        }
-
-        //// bootstrap list with some sample data
-        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
-                "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
-                "Android", "iPhone", "WindowsMobile" };
-
-
-        list= new ArrayList<>();
-        list.addAll(Arrays.asList(values));
-        // the ListAdapter converts  String -> ListItem
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
-        listView.setAdapter(adapter);
         registerForContextMenu(listView);
         listView.setOnItemClickListener((parent, view, position, id) -> Snackbar.make(findViewById(android.R.id.content), "Click ListItem Number " + position ,Snackbar.LENGTH_SHORT).show());
         listView.setOnItemLongClickListener((adapterView, view, position, id) -> {
@@ -106,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
+    public void onCreateContextMenu(ContextMenu menu,
+                                    View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         if(v.getId() == R.id.addMovieButton) {
@@ -120,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void removeFromList(int id)//,final  View view)
     {
-        list.remove(id);
+        movieList.remove(id);
         adapter.notifyDataSetChanged();
         Snackbar.make(findViewById(android.R.id.content), "remove " + id ,Snackbar.LENGTH_SHORT).show();
 
@@ -128,9 +127,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void editFromList(final int id)
     {
-        String item = list.get(id);
+        String item = movieList.get(id);
         //edit item via dialog
-
        // Intent myIntent1 = new Intent(this, Create.class);
        // startActivityForResult(myIntent1, 0);
         final EditText input = new EditText(MainActivity.this);
@@ -149,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         alert.setView(editText);
         alert.setPositiveButton("Ok", (dialog, whichButton) -> {
             String YouEditTextValue = editText.getText().toString();
-            list.set(id ,YouEditTextValue);
+            movieList.set(id ,YouEditTextValue);
             adapter.notifyDataSetChanged();
             Snackbar.make(findViewById(android.R.id.content), "edit " + id + " success",Snackbar.LENGTH_SHORT).show();
 
@@ -179,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void removeAllOptionHandler(){
-        list.clear();
+        movieList.clear();
         adapter.notifyDataSetChanged();
         Snackbar.make(findViewById(android.R.id.content), "Removed all items",Snackbar.LENGTH_SHORT).show();
     }
@@ -234,5 +232,11 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        AppDatabase.destroyInstance();
+        super.onDestroy();
     }
 }

@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
@@ -61,21 +62,21 @@ public class MovieDbHelperTest {
     @Test
     public void writeMoviesAndReadInList() {
         List<Movie> moviesIn = DataGenerator.generateMovies();
-        mMovieDao.insertMovies(moviesIn);
-        List<Movie> moviesOut = Arrays.asList(mMovieDao.findAllMovies());
-        assertThat(moviesIn.size(), equalTo(moviesOut.size()));
+        mMovieDao.insertMovie(moviesIn);
+        LiveData<List<Movie>> moviesOut = mMovieDao.findAllMovies();
+        assertThat(moviesIn.size(), equalTo(moviesOut.getValue().size()));
     }
 
     @Test
     public void updateItemTest() {
         //setup movies in the data base
         List<Movie> moviesIn = DataGenerator.generateMovies();
-        mMovieDao.insertMovies(moviesIn);
+        mMovieDao.insertMovie(moviesIn);
 
         //get the movies back
-        List<Movie> moviesOut = Arrays.asList(mMovieDao.findAllMovies());
+        LiveData<List<Movie>> moviesOut = mMovieDao.findAllMovies();
         //change an item
-        Movie movie = moviesOut.get(0);
+        Movie movie = moviesOut.getValue().get(0);
         Log.i(TAG, movie.toString());
         movie.setBody(movie.getBody() + " -- NOT");
 
@@ -83,10 +84,10 @@ public class MovieDbHelperTest {
         mMovieDao.updateMovie(movie);
 
         //get them movie by id
-        Movie movieOut = mMovieDao.findById(movie.getId());
-        moviesOut = Arrays.asList(mMovieDao.findAllMovies());
-        assertThat(moviesIn.size(), equalTo(moviesOut.size()));
-        assertThat(movieOut.getBody(), endsWith(" -- NOT"));
+        LiveData<Movie> movieOut = mMovieDao.findById(movie.getId());
+        moviesOut = mMovieDao.findAllMovies();
+        assertThat(moviesIn.size(), equalTo(moviesOut.getValue().size()));
+        assertThat(movieOut.getValue().getBody(), endsWith(" -- NOT"));
         assertThat(movie, equalTo(movieOut));
     }
 
@@ -95,13 +96,13 @@ public class MovieDbHelperTest {
 
         //setup movies in the data base
         List<Movie> moviesIn = DataGenerator.generateMovies();
-        mMovieDao.insertMovies(moviesIn);
+        mMovieDao.insertMovie(moviesIn);
 
         //get the movies back
-        List<Movie> moviesOut = Arrays.asList(mMovieDao.findAllMovies());
+        LiveData<List<Movie>> moviesOut = mMovieDao.findAllMovies();
 
         //change an item
-        Movie movie = moviesOut.get(0);
+        Movie movie = moviesOut.getValue().get(0);
         Log.i(TAG, movie.toString());
         movie.setBody( movie.getBody() + " -- NOT");
 
@@ -109,10 +110,10 @@ public class MovieDbHelperTest {
         mMovieDao.deleteMovie(movie);
 
         //get them movie by id
-        Movie movieOut = mMovieDao.findById(movie.getId());
+        LiveData<Movie> movieOut = mMovieDao.findById(movie.getId());
         assertThat(movieOut, is(nullValue()));
 
-        moviesOut = Arrays.asList(mMovieDao.findAllMovies());
-        assertThat(moviesOut.size(), equalTo(moviesIn.size() - 1));
+        moviesOut = mMovieDao.findAllMovies();
+        assertThat(moviesOut.getValue().size(), equalTo(moviesIn.size() - 1));
     }
 }

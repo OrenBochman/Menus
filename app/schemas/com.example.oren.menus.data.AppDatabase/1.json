@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ea9851937b51e974f018cbe612fb9fb3",
+    "identityHash": "013621035a43f08778b6ab67696e122a",
     "entities": [
       {
         "tableName": "movies",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `movieTitle` TEXT, `movieBody` TEXT, `movieUri` TEXT, `movieRating` INTEGER NOT NULL, `movieWatched` INTEGER NOT NULL, `movieCategory` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` INTEGER NOT NULL, `title` TEXT, `body` TEXT, `uri` TEXT, `rating` INTEGER NOT NULL, `watched` INTEGER NOT NULL, `category` TEXT)",
         "fields": [
           {
             "fieldPath": "_id",
@@ -15,38 +15,44 @@
             "notNull": true
           },
           {
+            "fieldPath": "webId",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "title",
-            "columnName": "movieTitle",
+            "columnName": "title",
             "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "body",
-            "columnName": "movieBody",
+            "columnName": "body",
             "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "uri",
-            "columnName": "movieUri",
+            "columnName": "uri",
             "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "rating",
-            "columnName": "movieRating",
+            "columnName": "rating",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "watched",
-            "columnName": "movieWatched",
+            "columnName": "watched",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "category",
-            "columnName": "movieCategory",
+            "columnName": "category",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -63,7 +69,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ea9851937b51e974f018cbe612fb9fb3\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"013621035a43f08778b6ab67696e122a\")"
     ]
   }
 }
