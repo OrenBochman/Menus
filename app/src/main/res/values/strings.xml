@@ -6,7 +6,8 @@
     <string name="edit_button">edit button</string>
     <string name="remove_button">remove button</string>
     <string name="movie_name" tools:keep="@string/movie_name">Movie name</string>
-    <string name="alice_in_wonderland" tools:keep="@string/alice_in_wonderland">Alice in Wonderland</string>
+    <string name="alice_in_wonderland_title" tools:keep="@string/alice_in_wonderland">Alice in Wonderland title</string>
+    <string name="alice_in_wonderland_body" tools:keep="@string/alice_in_wonderland">Alice in Wonderland body</string>
     <string name="movie_image" tools:keep="@string/movie_image">Movie image</string>
     <string name="movie_category" tools:keep="@string/movie_category">Movie category</string>
     <string name="title">TMDB</string>
@@ -21,4 +22,5 @@
     <string name="show" tools:keep="@string/show">Show</string>
     <string name="ok" tools:keep="@string/ok">OK</string>
     <string name="cancel" tools:keep="@string/cancel">Cancel</string>
+    <string name="movie_description">movie description</string>
 </resources>

@@ -77,16 +77,16 @@ public class MovieDbHelperTest {
         //change an item
         Movie movie = moviesOut.get(0);
         Log.i(TAG, movie.toString());
-        movie.body = movie.body + " -- NOT";
+        movie.setBody(movie.getBody() + " -- NOT");
 
         //update the db
         mMovieDao.updateMovie(movie);
 
         //get them movie by id
-        Movie movieOut = mMovieDao.findById(movie.id);
+        Movie movieOut = mMovieDao.findById(movie.getId());
         moviesOut = Arrays.asList(mMovieDao.findAllMovies());
         assertThat(moviesIn.size(), equalTo(moviesOut.size()));
-        assertThat(movieOut.body, endsWith(" -- NOT"));
+        assertThat(movieOut.getBody(), endsWith(" -- NOT"));
         assertThat(movie, equalTo(movieOut));
     }
 
@@ -103,13 +103,13 @@ public class MovieDbHelperTest {
         //change an item
         Movie movie = moviesOut.get(0);
         Log.i(TAG, movie.toString());
-        movie.body = movie.body + " -- NOT";
+        movie.setBody( movie.getBody() + " -- NOT");
 
         //update the db
         mMovieDao.deleteMovie(movie);
 
         //get them movie by id
-        Movie movieOut = mMovieDao.findById(movie.id);
+        Movie movieOut = mMovieDao.findById(movie.getId());
         assertThat(movieOut, is(nullValue()));
 
         moviesOut = Arrays.asList(mMovieDao.findAllMovies());
