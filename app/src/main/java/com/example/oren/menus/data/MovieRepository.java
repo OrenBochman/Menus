@@ -10,16 +10,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-//import javax.inject.Inject;
-//import javax.inject.Singleton;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import retrofit2.Callback;
 import retrofit2.Call;
 import retrofit2.Response;
-
-
 
 public class MovieRepository {
     private String TAG = MovieRepository.class.getName();
